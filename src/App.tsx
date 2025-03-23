@@ -9,12 +9,9 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const queryClient = new QueryClient();
-
-// Install framer-motion for animations
-import { motion, AnimatePresence } from "framer-motion";
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
 
 const App = () => {
   // Check for saved theme on initial load

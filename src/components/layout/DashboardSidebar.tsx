@@ -1,157 +1,177 @@
 
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useMobile } from "@/hooks/use-mobile";
+
 import {
-  BarChart3,
-  ChevronLeft,
-  CreditCard,
-  Home,
-  PieChart,
+  LayoutDashboard,
+  LineChart,
+  WalletCards,
+  History,
   Settings,
   User,
-  Wallet
+  ChevronsLeft,
+  ChevronsRight,
+  Menu,
+  TrendingUp,
 } from "lucide-react";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarFooter,
-} from "@/components/ui/sidebar";
-
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./ThemeToggle";
-
-const menuItems = [
+const navItems = [
   {
-    title: "Overview",
-    icon: Home,
+    title: "Dashboard",
+    icon: LayoutDashboard,
     path: "/dashboard",
+    color: "text-blue-500",
   },
   {
     title: "Investments",
-    icon: PieChart,
+    icon: TrendingUp,
     path: "/dashboard/investments",
+    color: "text-green-500",
   },
   {
     title: "Transactions",
-    icon: CreditCard,
+    icon: History,
     path: "/dashboard/transactions",
+    color: "text-purple-500",
   },
   {
     title: "Analytics",
-    icon: BarChart3,
+    icon: LineChart,
     path: "/dashboard/analytics",
+    color: "text-yellow-500",
   },
   {
     title: "Wallets",
-    icon: Wallet,
+    icon: WalletCards,
     path: "/dashboard/wallets",
+    color: "text-red-500",
+  },
+  {
+    title: "Settings",
+    icon: Settings,
+    path: "/dashboard/settings",
+    color: "text-slate-500",
+  },
+  {
+    title: "Profile",
+    icon: User,
+    path: "/dashboard/profile",
+    color: "text-indigo-500",
   },
 ];
 
 export function DashboardSidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
-
+  const isMobile = useMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [collapsed, setCollapsed] = useState(false);
+  
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
+  
   return (
-    <Sidebar
-      expanded={!collapsed}
-      onExpandedChange={(expanded) => setCollapsed(!expanded)}
-      className={cn(
-        "border-r border-border/40 transition-all duration-300",
-        collapsed ? "w-[70px]" : "w-[240px]"
-      )}
-    >
-      <SidebarHeader className="px-3 py-5 flex items-center justify-between">
-        {!collapsed && (
-          <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center">
-              <span className="font-semibold text-white">FS</span>
-            </div>
-            <span className="font-semibold tracking-tight text-lg">
-              FundSmart
-            </span>
-          </div>
-        )}
+    <>
+      {/* Mobile menu toggle */}
+      {isMobile && (
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setCollapsed(!collapsed)}
-          className={cn(
-            "rounded-full shrink-0",
-            collapsed ? "rotate-180 mx-auto" : "ml-auto"
-          )}
+          className="fixed top-4 left-4 z-50 lg:hidden"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
-          <ChevronLeft className="h-5 w-5" />
-          <span className="sr-only">Toggle Sidebar</span>
+          <Menu className="h-5 w-5" />
         </Button>
-      </SidebarHeader>
-
-      <SidebarContent className="px-3">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton
-                    className={cn(
-                      "flex transition-colors",
-                      location.pathname === item.path
-                        ? "text-accent font-medium"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                    onClick={() => navigate(item.path)}
-                  >
-                    <item.icon className={cn("h-5 w-5 mr-3", collapsed ? "mr-0 mx-auto" : "")} />
-                    {!collapsed && <span>{item.title}</span>}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup className="mt-auto">
-          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
-            Settings
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  className="flex text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => navigate("/dashboard/settings")}
-                >
-                  <Settings className={cn("h-5 w-5 mr-3", collapsed ? "mr-0 mx-auto" : "")} />
-                  {!collapsed && <span>Settings</span>}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  className="flex text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => navigate("/dashboard/profile")}
-                >
-                  <User className={cn("h-5 w-5 mr-3", collapsed ? "mr-0 mx-auto" : "")} />
-                  {!collapsed && <span>Profile</span>}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      <SidebarFooter className={cn("p-3", collapsed ? "flex justify-center" : "")}>
-        <ThemeToggle />
-      </SidebarFooter>
-    </Sidebar>
+      )}
+    
+      <div
+        className={cn(
+          "h-screen bg-background sticky top-0 border-r border-border/40 transition-all duration-300",
+          isSidebarOpen ? "flex" : "hidden lg:flex",
+          collapsed ? "w-16" : "w-64"
+        )}
+      >
+        <Collapsible
+          open={!collapsed}
+          onOpenChange={(open) => setCollapsed(!open)}
+          className="flex flex-col w-full"
+        >
+          {/* Logo and collapse button */}
+          <div className={cn(
+            "h-14 flex items-center sticky top-0 z-20 px-4 border-b border-border/40",
+            collapsed ? "justify-center" : "justify-between"
+          )}>
+            {!collapsed && (
+              <div className="flex items-center gap-2">
+                <div className="h-7 w-7 rounded-full bg-accent flex items-center justify-center">
+                  <span className="font-semibold text-white text-xs">FS</span>
+                </div>
+                <span className="font-semibold tracking-tight">FundSmart</span>
+              </div>
+            )}
+            
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-7 w-7">
+                {collapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+          
+          {/* Navigation */}
+          <ScrollArea className="flex-1 py-2">
+            <CollapsibleContent className="data-[state=closed]:hidden-force" forceMount>
+              <nav className="flex flex-col gap-1 px-2">
+                {navItems.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
+                        "hover:bg-secondary/80",
+                        isActive ? "bg-secondary text-primary" : "text-muted-foreground"
+                      )}
+                    >
+                      <item.icon className={cn("h-5 w-5", item.color)} />
+                      <span className="font-medium">{item.title}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </CollapsibleContent>
+            
+            {/* Collapsed menu */}
+            {collapsed && (
+              <div className="flex flex-col gap-1 px-2">
+                {navItems.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={cn(
+                        "flex items-center justify-center p-2 rounded-md transition-colors",
+                        "hover:bg-secondary/80",
+                        isActive ? "bg-secondary text-primary" : "text-muted-foreground"
+                      )}
+                    >
+                      <item.icon className={cn("h-5 w-5", item.color)} />
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </ScrollArea>
+        </Collapsible>
+      </div>
+    </>
   );
 }
