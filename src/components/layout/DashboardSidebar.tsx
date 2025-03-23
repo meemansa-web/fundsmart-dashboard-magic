@@ -18,6 +18,11 @@ import {
   ChevronsRight,
   Menu,
   TrendingUp,
+  BrainCircuit,
+  Target,
+  Users,
+  Globe,
+  ShieldAlert,
 } from "lucide-react";
 
 const navItems = [
@@ -32,6 +37,36 @@ const navItems = [
     icon: TrendingUp,
     path: "/dashboard/investments",
     color: "text-green-500",
+  },
+  {
+    title: "AI Recommendations",
+    icon: BrainCircuit,
+    path: "/dashboard/ai-recommendations",
+    color: "text-purple-500",
+  },
+  {
+    title: "Risk Analysis",
+    icon: ShieldAlert,
+    path: "/dashboard/risk-analysis",
+    color: "text-red-500",
+  },
+  {
+    title: "Investment Goals",
+    icon: Target,
+    path: "/dashboard/goals",
+    color: "text-yellow-500",
+  },
+  {
+    title: "Community",
+    icon: Users,
+    path: "/dashboard/community",
+    color: "text-indigo-500",
+  },
+  {
+    title: "Global Markets",
+    icon: Globe,
+    path: "/dashboard/global",
+    color: "text-cyan-500",
   },
   {
     title: "Transactions",

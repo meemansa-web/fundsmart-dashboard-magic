@@ -9,7 +9,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +45,13 @@ const App = () => {
                 <Route path="wallets" element={<Dashboard />} />
                 <Route path="settings" element={<Dashboard />} />
                 <Route path="profile" element={<Dashboard />} />
+                
+                {/* New Feature Routes */}
+                <Route path="ai-recommendations" element={<Dashboard />} />
+                <Route path="risk-analysis" element={<Dashboard />} />
+                <Route path="goals" element={<Dashboard />} />
+                <Route path="community" element={<Dashboard />} />
+                <Route path="global" element={<Dashboard />} />
               </Route>
               
               {/* Catch-all route */}
