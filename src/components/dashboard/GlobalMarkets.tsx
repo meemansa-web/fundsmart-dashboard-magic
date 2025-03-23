@@ -12,7 +12,7 @@ import {
   Banknote,
   Euro,
   PoundSterling,
-  Yen
+  JapaneseYen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -95,7 +95,7 @@ export function GlobalMarkets() {
       case "GBP":
         return <PoundSterling className="h-4 w-4" />;
       case "JPY":
-        return <Yen className="h-4 w-4" />;
+        return <JapaneseYen className="h-4 w-4" />;
       default:
         return <DollarSign className="h-4 w-4" />;
     }

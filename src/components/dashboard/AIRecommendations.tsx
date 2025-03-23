@@ -1,172 +1,158 @@
-
 import { useState, useEffect } from "react";
 import { ChartCard } from "./ChartCard";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, TrendingUp, TrendingDown, BrainCircuit, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Lightbulb, TrendingUp, TrendingDown, AlertCircle, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const recommendationsData = [
+const recommendations = [
   {
     id: 1,
-    asset: "NVDA (NVIDIA)",
-    type: "Stock",
-    recommendation: "Buy",
-    reason: "Strong AI market growth and consistent performance indicators",
-    confidence: 92,
-    potentialReturn: "+18.5%",
-    risk: "Medium",
+    title: "Diversify Tech Holdings",
+    description: "Reduce exposure to the tech sector by allocating funds to healthcare and consumer staples.",
+    urgency: "Medium",
+    potential: "High",
+    rationale: "Tech sector is currently overvalued; diversification can mitigate risk.",
+    actions: ["Reallocate 15% of tech funds", "Research healthcare stocks", "Invest in consumer staples ETF"],
   },
   {
     id: 2,
-    asset: "VGIT (Vanguard IT Bond ETF)",
-    type: "ETF",
-    recommendation: "Hold",
-    reason: "Current market volatility suggests maintaining position in stable bonds",
-    confidence: 87,
-    potentialReturn: "+4.2%",
-    risk: "Low",
+    title: "Increase Bond Allocation",
+    description: "Increase bond holdings to stabilize portfolio during potential market corrections.",
+    urgency: "Low",
+    potential: "Medium",
+    rationale: "Bonds provide a hedge against equity downturns.",
+    actions: ["Purchase government bonds", "Invest in corporate bond fund"],
   },
   {
     id: 3,
-    asset: "AMZN (Amazon)",
-    type: "Stock",
-    recommendation: "Increase Position",
-    reason: "Strong Q2 earnings and expansion in AI services",
-    confidence: 89,
-    potentialReturn: "+12.7%",
-    risk: "Medium",
+    title: "Explore Emerging Markets",
+    description: "Invest a small portion of your portfolio in emerging market equities for high growth potential.",
+    urgency: "High",
+    potential: "High",
+    rationale: "Emerging markets offer significant growth opportunities but come with higher risk.",
+    actions: ["Allocate 5% to emerging markets", "Research emerging market ETFs"],
   },
   {
     id: 4,
-    asset: "BTC (Bitcoin)",
-    type: "Crypto",
-    recommendation: "Consider Entry",
-    reason: "Technical indicators point to potential uptrend after consolidation",
-    confidence: 78,
-    potentialReturn: "+22.4%",
-    risk: "High",
+    title: "Rebalance Portfolio",
+    description: "Rebalance your portfolio to align with your target asset allocation.",
+    urgency: "Medium",
+    potential: "Medium",
+    rationale: "Maintain desired risk level and capture gains from overperforming assets.",
+    actions: ["Sell overperforming assets", "Buy underperforming assets"],
+  },
+  {
+    id: 5,
+    title: "Consider Value Stocks",
+    description: "Shift some investments to value stocks, which are currently undervalued compared to growth stocks.",
+    urgency: "Low",
+    potential: "Medium",
+    rationale: "Value stocks may outperform growth stocks in the current economic environment.",
+    actions: ["Research value stocks", "Invest in value stock ETF"],
   },
 ];
 
 export function AIRecommendations() {
-  const [recommendations, setRecommendations] = useState(recommendationsData);
   const [loaded, setLoaded] = useState(false);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoaded(true);
     }, 300);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
-  const getRecommendationColor = (recommendation: string) => {
-    switch (recommendation) {
-      case "Buy":
-      case "Increase Position":
-      case "Consider Entry":
-        return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
-      case "Hold":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
-      case "Sell":
-      case "Decrease Position":
-        return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+
+  const getUrgencyColor = (urgency: string) => {
+    switch (urgency) {
+      case "Low":
+        return "text-green-500";
+      case "Medium":
+        return "text-yellow-500";
+      case "High":
+        return "text-red-500";
       default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400";
+        return "text-muted-foreground";
     }
   };
-  
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
+
+  const getPotentialIcon = (potential: string) => {
+    switch (potential) {
       case "Low":
-        return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+        return TrendingDown;
       case "Medium":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400";
+        return TrendingUp;
       case "High":
-        return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+        return TrendingUp;
       default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400";
+        return TrendingUp;
     }
   };
 
   return (
-    <ChartCard 
-      title="AI-Powered Investment Recommendations" 
-      description="Personalized suggestions based on your portfolio and market trends"
+    <ChartCard
+      title="AI Recommendations"
+      description="Personalized investment recommendations powered by AI"
       className="h-full"
-      footer={
-        <Button variant="ghost" className="w-full justify-between">
-          <span>View all recommendations</span>
-          <ArrowRight className="h-4 w-4" />
-        </Button>
-      }
-      menuItems={[
-        { label: "Refresh Recommendations", onClick: () => console.log("Refresh") },
-        { label: "Adjust AI Parameters", onClick: () => console.log("Adjust AI") },
-        { label: "Export Recommendations", onClick: () => console.log("Export") },
-      ]}
     >
-      <div className="grid grid-cols-1 gap-4">
-        {recommendations.map((item, index) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ 
-              opacity: loaded ? 1 : 0, 
-              y: loaded ? 0 : 20 
-            }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-          >
-            <Card className="p-4 hover:bg-accent/10 transition-colors border border-border/50">
-              <div className="flex items-start justify-between mb-3">
-                <div>
+      <ScrollArea className="h-[460px] w-full">
+        <div className="space-y-4">
+          {recommendations.map((recommendation, index) => (
+            <motion.div
+              key={recommendation.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: loaded ? 1 : 0, y: loaded ? 0 : 10 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="rounded-md border bg-secondary/50 p-4"
+            >
+              <div className="flex items-start justify-between">
+                <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">{item.asset}</h3>
-                    <Badge variant="outline" className="text-xs">
-                      {item.type}
+                    <Lightbulb className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="text-sm font-semibold">{recommendation.title}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{recommendation.description}</p>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">
+                      <span className={cn("text-xs font-medium uppercase", getUrgencyColor(recommendation.urgency))}>
+                        {recommendation.urgency} Urgency
+                      </span>
                     </Badge>
+                    <div className="flex items-center gap-1 text-xs">
+                      <getPotentialIcon potential={recommendation.potential} className="h-3 w-3" />
+                      <span>{recommendation.potential} Potential</span>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">{item.reason}</p>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <BrainCircuit className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">{item.confidence}%</span>
-                </div>
+                <AlertCircle className="h-4 w-4 text-muted-foreground" />
               </div>
-              
-              <div className="flex justify-between items-center mt-2">
-                <Badge className={cn("font-medium", getRecommendationColor(item.recommendation))}>
-                  {item.recommendation}
-                </Badge>
-                <div className="flex gap-4">
-                  <div className="flex items-center">
-                    <Badge variant="outline" className={getRiskColor(item.risk)}>
-                      {item.risk} Risk
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {item.potentialReturn.startsWith("+") ? (
-                      <TrendingUp className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <TrendingDown className="h-4 w-4 text-red-500" />
-                    )}
-                    <span className={cn(
-                      "text-sm font-medium",
-                      item.potentialReturn.startsWith("+") 
-                        ? "text-green-500" 
-                        : "text-red-500"
-                    )}>
-                      {item.potentialReturn}
-                    </span>
-                  </div>
-                </div>
+              <details className="mt-3">
+                <summary className="text-sm font-medium text-primary hover:underline cursor-pointer">
+                  Why this recommendation?
+                </summary>
+                <p className="mt-2 text-sm text-muted-foreground">{recommendation.rationale}</p>
+              </details>
+              <div className="mt-3 space-y-2">
+                <h4 className="text-xs font-semibold uppercase text-muted-foreground">Actions</h4>
+                <ul className="list-disc pl-4 space-y-1">
+                  {recommendation.actions.map((action, i) => (
+                    <li key={i} className="text-sm text-muted-foreground">
+                      {action}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+              <Button size="sm" className="mt-4">
+                Take Action <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          ))}
+        </div>
+      </ScrollArea>
     </ChartCard>
   );
 }

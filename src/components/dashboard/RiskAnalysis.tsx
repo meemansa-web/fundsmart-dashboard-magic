@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ChartCard } from "./ChartCard";
 import { motion } from "framer-motion";
@@ -13,6 +12,7 @@ import {
   ResponsiveContainer 
 } from "recharts";
 import { ShieldAlert, AlertTriangle, CheckCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const riskData = [
   { name: "Jan", risk: 32 },
