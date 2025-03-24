@@ -104,8 +104,7 @@ const Index = () => {
             <div className="max-w-2xl mx-auto space-y-4 mb-12">
               <h2 className="text-3xl font-semibold tracking-tight">Ready to take control of your investments?</h2>
               <p className="text-muted-foreground">
-                Launch the dashboard now and experience a new way of managing your financial future.
-              </p>
+                Launch the dashboard now and experience a new way of managing your financial future. </p>
             </div>
 
             <Button size="lg" onClick={() => navigate("/dashboard")}>
