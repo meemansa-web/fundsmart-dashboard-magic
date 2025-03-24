@@ -101,7 +101,7 @@ const Dashboard = () => {
       default:
         return (
           <div className="flex items-center justify-center h-full min-h-[400px]">
-            <p className="text-muted-foreground">Content for {path} coming soon...</p>
+            <p className="text-muted-foreground">Content for {path} coming soon..</p>
           </div>
         );
     }
